@@ -11,11 +11,13 @@ public class EmpWageBuilder implements ICalculateEmpWage {
 
 	public EmpWageBuilder() {
 		companyEmpWageArrayList = new ArrayList<>();
+		cMap = new HashMap<>();
 	}
 
 	public void addCompanyEmpWage(String company, int empRatePerHr, int noOfDays, int maxHrsPerMonth) {
 		CompanyEmpWage ce = new CompanyEmpWage(company, empRatePerHr, noOfDays, maxHrsPerMonth);
 		companyEmpWageArrayList.add(ce);
+		cMap.put(company, ce);
 	}
 
 	public void computeEmpWage() {
@@ -43,18 +45,23 @@ public class EmpWageBuilder implements ICalculateEmpWage {
 			}
 			companyEmpWage.dailyEmpWage.add(empHrs * companyEmpWage.empRatePerHr);
 			totalEmpHrs += empHrs;
-			System.out.println("Day: " + totalWorkingDays + " EmpHours " + empHrs + " Daily wage "
-					+ companyEmpWage.dailyEmpWage.get(i));
+			System.out.println("Day: " + totalWorkingDays + " EmpHours " + empHrs + " Daily wage "+ companyEmpWage.dailyEmpWage.get(i));
 			i++;
 		}
 		return totalEmpHrs * companyEmpWage.empRatePerHr;
 	}
+	@Override
+    public int getTotalWage(String company){
+      return cMap.get(company).totalWage;
+    }
 
 	public static void main(String[] args) {
 		ICalculateEmpWage empWageObj = new EmpWageBuilder();
 		empWageObj.addCompanyEmpWage("DMart", 20, 2, 10);
 		empWageObj.addCompanyEmpWage("Jio", 10, 4, 20);
 		empWageObj.computeEmpWage();
+		System.out.println("Total wage for DMart company " + empWageObj.getTotalWage("DMart"));
+		System.out.println("Total wage for Jio company " + empWageObj.getTotalWage("Jio"));
 	}
 
 }
