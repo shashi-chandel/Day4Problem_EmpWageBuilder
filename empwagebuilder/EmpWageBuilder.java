@@ -6,27 +6,28 @@ public class EmpWageBuilder implements ICalculateEmpWage {
 	public static final int IS_PART_TIME = 1;
 	public static final int IS_FULL_TIME = 2;
 
-	private int noOfCompany = 0;
-	private CompanyEmpWage[] companyEmpWageArray;
+	private ArrayList<CompanyEmpWage> companyEmpWageArrayList;
+	private Map<String, CompanyEmpWage> cMap;
 
 	public EmpWageBuilder() {
-		companyEmpWageArray = new CompanyEmpWage[5];
+		companyEmpWageArrayList = new ArrayList<>();
 	}
 
 	public void addCompanyEmpWage(String company, int empRatePerHr, int noOfDays, int maxHrsPerMonth) {
-		companyEmpWageArray[noOfCompany] = new CompanyEmpWage(company, empRatePerHr, noOfDays, maxHrsPerMonth);
-		noOfCompany++;
+		CompanyEmpWage ce = new CompanyEmpWage(company, empRatePerHr, noOfDays, maxHrsPerMonth);
+		companyEmpWageArrayList.add(ce);
 	}
 
 	public void computeEmpWage() {
-		for (int i = 0; i < noOfCompany; i++) {
-			companyEmpWageArray[i].setTotalWage(this.computeEmpWage(companyEmpWageArray[i]));
-			System.out.println(companyEmpWageArray[i]);
+		for (int i = 0; i < companyEmpWageArrayList.size(); i++) {
+			CompanyEmpWage companyEmpWage = companyEmpWageArrayList.get(i);
+			companyEmpWage.setTotalWage(this.computeEmpWage(companyEmpWage));
+			System.out.println(companyEmpWage);
 		}
 	}
 
 	private int computeEmpWage(CompanyEmpWage companyEmpWage) {
-		int empHrs = 0, totalEmpHrs = 0, totalWorkingDays = 0;
+		int i = 0, empHrs = 0, totalEmpHrs = 0, totalWorkingDays = 0;
 		while (totalEmpHrs <= companyEmpWage.maxHrsPerMonth && totalWorkingDays < companyEmpWage.noOfDays) {
 			totalWorkingDays++;
 			int check = (int) Math.floor(Math.random() * 10) % 3;
@@ -40,8 +41,11 @@ public class EmpWageBuilder implements ICalculateEmpWage {
 				default:
 					empHrs = 0;
 			}
+			companyEmpWage.dailyEmpWage.add(empHrs * companyEmpWage.empRatePerHr);
 			totalEmpHrs += empHrs;
-			System.out.println("Days: " + totalWorkingDays + " EmpHours: " + empHrs);
+			System.out.println("Day: " + totalWorkingDays + " EmpHours " + empHrs + " Daily wage "
+					+ companyEmpWage.dailyEmpWage.get(i));
+			i++;
 		}
 		return totalEmpHrs * companyEmpWage.empRatePerHr;
 	}
