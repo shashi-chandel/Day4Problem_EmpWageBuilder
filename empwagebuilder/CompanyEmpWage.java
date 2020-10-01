@@ -1,24 +1,31 @@
 package com.empwagebuilder;
 
+import java.util.*;
+
 public class CompanyEmpWage {
-	private final String company;
-	private final int empRatePerHour;
-	private final int numOfWorkingDays;
-	private final int maxHoursPerMonth;
-	private int totalEmpWage;
-	
-	public CompanyEmpWage(String company, int empRatePerHour, int numOfWorkingDays, int maxHoursPerMonth) {
+	public final String company;
+	public final int empRatePerHr;
+	public final int noOfDays;
+	public final int maxHrsPerMonth;
+	public int totalWage;
+    public List<Integer> dailyEmpWage;
+
+	public CompanyEmpWage(String company, int empRatePerHr, int noOfDays, int maxHrsPerMonth){
 		this.company = company;
-		this.empRatePerHour = empRatePerHour;
-		this.numOfWorkingDays = numOfWorkingDays;
-		this.maxHoursPerMonth = maxHoursPerMonth;
+		this.empRatePerHr = empRatePerHr;
+		this.noOfDays = noOfDays;
+		this.maxHrsPerMonth = maxHrsPerMonth;
+                    dailyEmpWage = new ArrayList<>();
+                    totalWage = 0;
 	}
-	
-	public void setTotalEmpWage(int totalEmpWage) {
-		this.totalEmpWage=totalEmpWage;
+
+	public void setTotalWage(int totalWage) {
+		this.totalWage = totalWage;
 	}
+
 	@Override
-	public String toString() {
-		return "Total Employee Wage for Company '"+company+"' is: "+totalEmpWage;
+	public String toString(){
+		return "Total Employee Wage for Company " + company + " is " + totalWage;
 	}
+		
 }
